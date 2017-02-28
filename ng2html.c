@@ -2,17 +2,17 @@
 
      NG2HTML NORTON GUIDE TO HTML DOCUMENT CONVERTER.
      Copyright (C) 1996,1997 David A Pearson
-   
+
      This program is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
-     the Free Software Foundation; either version 2 of the license, or 
+     the Free Software Foundation; either version 2 of the license, or
      (at your option) any later version.
-     
+
      This program is distributed in the hope that it will be useful,
      but WITHOUT ANY WARRANTY; without even the implied warranty of
      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
      GNU General Public License for more details.
-     
+
      You should have received a copy of the GNU General Public License
      along with this program; if not, write to the Free Software
      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -87,7 +87,7 @@
 
 /* Structure of the header record of a Norton Guide database. */
 
-typedef struct 
+typedef struct
 {
     unsigned short usMagic;
     short          sUnknown1;
@@ -99,7 +99,7 @@ typedef struct
 
 /* Structure to hold a tidy version of the header. */
 
-typedef struct 
+typedef struct
 {
     unsigned short usMenuCount;
     char           szTitle[ 41 ];
@@ -140,7 +140,7 @@ void LoadConfig( void );
 
 #define NG2HTML_VERSION "1.05"
 
-/* If you don't want my "advert" at the bottom of your pages, uncomment 
+/* If you don't want my "advert" at the bottom of your pages, uncomment
    the following: */
 
 /* #define NO_ADVERT */
@@ -201,7 +201,7 @@ int main( int argc, char **argv )
 	    LoadConfig();
 
 	    WriteInfo( &ngTidyHead );
-	    WriteMenu( fleNG, &ngTidyHead ); 
+	    WriteMenu( fleNG, &ngTidyHead );
 
 	    fseek( fleNG, lOffset, SEEK_SET );
 
@@ -241,7 +241,7 @@ void WriteInfo( NGTIDYHEAD *ngHeader )
 	SafePrint( f, "<HTML>\n<HEAD>\n<TITLE>%s - Information</TITLE>\n"
                    "</HEAD>\n%s\n<PRE>  Title: %s\nCredits: %s\n"
                    "         %s\n         %s\n         %s\n"
-                   "         %s\n</PRE>\n</BODY>\n</HTML>\n", 
+                   "         %s\n</PRE>\n</BODY>\n</HTML>\n",
                    ngHeader->szTitle,
                    pszBodyString,
                    ngHeader->szTitle,
@@ -292,7 +292,7 @@ void WriteMenu( FILE *fleNG, NGTIDYHEAD *ngHeader )
 	do
 	{
 	    iID = ReadWord( fleNG );
-	    
+
 	    switch ( iID )
 	    {
 	    case 0 :
@@ -313,7 +313,7 @@ void WriteMenu( FILE *fleNG, NGTIDYHEAD *ngHeader )
 		iID = 5;
 	    }
 	} while ( iID != 5 && i != ngHeader->usMenuCount );
-	
+
 	SafePrint( fMenu, "</OL>\n" );
 	StandardFooter( fMenu );
 
@@ -350,31 +350,31 @@ void WriteDropMenu( FILE *fleNG, FILE *fleMenu )
     long l;
     char szTitle[ 51 ];
     long *lpOffsets;
-    
+
     (void) ReadWord( fleNG );
     iItems = ReadWord( fleNG );
-    
+
     fseek( fleNG, 20L, SEEK_CUR );
-    
+
     lpOffsets = (long *) calloc( iItems, sizeof( long ) );
-    
+
     assert( lpOffsets ); /* Ouch! */
-    
+
     for ( i = 1; i < iItems; i++ )
     {
 	lpOffsets[ i - 1 ] = ReadLong( fleNG );
     }
-    
+
     l = ftell( fleNG );
     l += ( 8 * iItems );
-    
+
     fseek( fleNG, l, SEEK_SET );
-    
+
     GetStrZ( fleNG, szTitle, 40 );
 
     SafePrint( fleMenu, "<H2><LI>%s</LI></H2><P>\n", szTitle );
     SafePrint( fleMenu, "<OL>\n" );
-    
+
     for ( i = 1; i < iItems; i++ )
     {
 	GetStrZ( fleNG, szTitle, 50 );
@@ -383,17 +383,17 @@ void WriteDropMenu( FILE *fleNG, FILE *fleMenu )
 	{
 	    strcpy( szTitle, "(No Text For Menu Item)" );
 	}
-	
+
 	SafePrint( fleMenu, "<H3><LI><A HREF=\"" NG_PREFIX NG_ID
-                   NG_SUFFIX "\"%s>%s</H3></A></LI><P>\n", 
+                   NG_SUFFIX "\"%s>%s</H3></A></LI><P>\n",
                    lpOffsets[ i - 1 ], iFrames ? " TARGET=\"display\" " : "",
                    szTitle );
     }
-    
+
     SafePrint( fleMenu, "</OL>\n" );
-    
+
     (void) getc( fleNG );
-    
+
     free( lpOffsets );
 
     printf( "Found a drop menu\n" );
@@ -413,7 +413,7 @@ void WriteBody( FILE *fleNG, NGTIDYHEAD *pHead )
 	lOffset = ftell( fleNG );
 	iID     = ReadWord( fleNG );
 	lReset  = ftell( fleNG );
-	
+
 	switch ( iID )
 	{
 	case 0 :
@@ -462,22 +462,22 @@ void WriteShort( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 	(void) ReadWord( fleNG );
 	iItems = ReadWord( fleNG );
 	(void) ReadWord( fleNG );
-	
+
 	uParentLine = (unsigned) ReadWord( fleNG );
 	lParent     = ReadLong( fleNG );
-	
+
 	fseek( fleNG, 12L, SEEK_CUR );
-	
+
 	plOffsets = (long *) calloc( iItems, sizeof( long ) );
-	
+
 	assert( plOffsets ); /* Ouch! */
-	
+
 	for ( i = 0; i < iItems; i++ )
 	{
 	    ReadWord( fleNG );
 	    plOffsets[ i ] = ReadLong( fleNG );
 	}
-	
+
 	if ( lParent > 0 && uParentLine < 0xFFFF )
 	{
 	    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX "\">"
@@ -487,17 +487,17 @@ void WriteShort( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 	{
 	    SafePrint( f, "[^^Up^^]\n" );
 	}
-	
+
 	StandardButtons( f );
-	
+
 	SafePrint( f, "<HR>\n<PRE>\n" );
-	
+
 	for ( i = 0; i < iItems; i++ )
 	{
 	    GetStrZ( fleNG, szBuffer, sizeof( szBuffer ) );
 	    if ( plOffsets[ i ] > 0 )
 	    {
-		SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX "\">", 
+		SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX "\">",
                            plOffsets[ i ] );
 		ExpandText( f, szBuffer );
 		SafePrint( f, "</A>\n" );
@@ -508,7 +508,7 @@ void WriteShort( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 		SafePrint( f, "\n" );
 	    }
 	}
-	
+
 	free( plOffsets );
 
 	SafePrint( f, "</PRE>\n" );
@@ -527,8 +527,8 @@ void WriteShort( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 /*
  */
 
-void WriteLong( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead ) 
-{ 
+void WriteLong( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
+{
     FILE     *f;
     char     szName[ 30 ]; /* Overkill! */
     int      iItems;
@@ -551,54 +551,54 @@ void WriteLong( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 	StandardHeader( f, pHead, "Long Entry" );
 
 	(void) ReadWord( fleNG );
-    
+
 	iItems      = ReadWord( fleNG );
 	iSeeAlsos   = ReadWord( fleNG );
 	uParentLine = (unsigned) ReadWord( fleNG );
 	lParent     = ReadLong( fleNG );
-	
+
 	fseek( fleNG, 4L, SEEK_CUR );
-	
+
 	lPrevious = ReadLong( fleNG );
 	lNext     = ReadLong( fleNG );
-	
+
 	lPrevious = ( lPrevious == -1L ? 0L : lPrevious );
 	lNext     = ( lNext == -1L ? 0L : lNext );
-	
+
 	if ( lPrevious )
 	{
-	    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX 
+	    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX
                        "\">[&lt;&lt;Previous Entry]</A>\n", lPrevious );
 	}
 	else
 	{
 	    SafePrint( f, "[&lt;&lt;Previous Entry]\n" );
 	}
-	
+
 	if ( lParent > 0 && uParentLine < 0xFFFF )
 	{
-	    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX 
+	    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX
                        "\">[^^Up^^]</A>\n", lParent );
 	}
 	else
 	{
 	    SafePrint( f, "[^^Up^^]\n" );
 	}
-	
+
 	if ( lNext )
 	{
-	    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX 
+	    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX
                        "\">[Next Entry&gt;&gt;]</A>\n", lNext );
 	}
 	else
 	{
 	    SafePrint( f, "[Next Entry&gt;&gt;]\n" );
 	}
-	
+
 	StandardButtons( f );
-	
+
 	SafePrint( f, "<HR>\n<PRE>\n" );
-	
+
 	for ( i = 0; i < iItems; i++ )
 	{
 	    GetStrZ( fleNG, szBuffer, sizeof( szBuffer ) );
@@ -607,20 +607,20 @@ void WriteLong( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 	}
 
 	SafePrint( f, "</PRE>\n" );
-        
+
 	if ( iSeeAlsos )
 	{
 	    SafePrint( f, "<HR>\n<B>See Also:</B>\n" );
-	    
+
 	    iCnt      = ReadWord( fleNG );
 	    plOffsets = (long *) calloc( iCnt, sizeof( long ) );
-	    
+
 	    for ( i = 0; i < iCnt; i++ )
 	    {
 		/* There is a reason for this < 20 check, but
 		   I can't remember what it is, so I'll leave
 		   it in for the moment. */
-		
+
 		if ( i < 20 )
 		{
 		    plOffsets[ i ] = ReadLong( fleNG );
@@ -630,13 +630,13 @@ void WriteLong( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 		    fseek( fleNG, 4L, SEEK_SET );
 		}
 	    }
-	    
+
 	    for ( i = 0; i < iCnt; i++ )
 	    {
 		if ( i < 20 )
 		{
 		    GetStrZ( fleNG, szBuffer, sizeof( szBuffer ) );
-		    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX 
+		    SafePrint( f, "<A HREF=\"" NG_PREFIX NG_ID NG_SUFFIX
                                "\">%s</A>\n", plOffsets[ i ], szBuffer );
 		}
 	    }
@@ -651,7 +651,7 @@ void WriteLong( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 	fprintf( stderr, "\nError! Can't create %s!\n", szName );
 	exit( 1 );
     }
-} 
+}
 
 /*
  */
@@ -659,7 +659,7 @@ void WriteLong( FILE *fleNG, long lOffset, NGTIDYHEAD *pHead )
 void SkipSection( FILE *fleNG )
 {
     int iLen = ReadWord( fleNG );
-    
+
     fseek( fleNG, (long) 22L + iLen, SEEK_CUR );
 }
 
@@ -670,7 +670,7 @@ int ReadWord( FILE *f )
 {
     unsigned char b1 = NG_READBYTE( f );
     unsigned char b2 = NG_READBYTE( f );
-    
+
     return( ( b2 << 8 ) + b1 );
 }
 
@@ -703,15 +703,15 @@ void GetStrZ( FILE *f, char *pszBuffer, int iMax )
     long lSavPos = ftell( f );
     int  fEOS = 0;
     int  i;
-    
+
     (void) fread( pszBuffer, iMax, 1, f );
-    
+
     for ( i = 0; i < iMax && !fEOS; i++, pszBuffer++ )
     {
 	*pszBuffer = NG_DECRYPT( *pszBuffer );
 	fEOS       = ( *pszBuffer == 0 );
     }
-    
+
     fseek( f, (long) lSavPos + i, SEEK_SET );
 }
 
@@ -732,7 +732,7 @@ void TidyHeader( NGHEADER *pngHeader, NGTIDYHEAD *pngTidy )
     {
         for ( n = 0; n < 66; n++ )
         {
-            pngHeader->szCredits[ i ][ n ] = 
+            pngHeader->szCredits[ i ][ n ] =
                 SaneText( pngHeader->szCredits[ i ][ n ] );
         }
     }
@@ -815,7 +815,7 @@ unsigned char SaneText( unsigned char bChar )
 	    bChar = '.';
 	}
     }
-    
+
     return( bChar );
 }
 
@@ -829,14 +829,14 @@ void ExpandText( FILE *f, char *pszText )
     int  iUnder = 0;
     int  iSpaces;
     int  i;
-    
+
     while ( *psz )
     {
 	switch ( *psz )
 	{
 	case '^' :
 	    ++psz;
-	    
+
 	    switch ( *psz )
 	    {
 	    case 'a' :
@@ -883,9 +883,9 @@ void ExpandText( FILE *f, char *pszText )
 	    break;
 	case (char) 0xFF :
 	    ++psz;
-	    
+
 	    iSpaces = *psz;
-	    
+
 	    for ( i = 0; i < iSpaces; i++ )
 	    {
 		SafePrint( f, " " );
@@ -895,10 +895,10 @@ void ExpandText( FILE *f, char *pszText )
 	    PrintHtmlChar( f, (char) SaneText( *psz ) );
 	    break;
 	}
-	
+
 	++psz;
     }
-    
+
     if ( iBold ) SafePrint( f, "</B>" );
     if ( iUnder ) SafePrint( f, "</U>" );
 }
@@ -935,11 +935,11 @@ int Hex2Byte( char *psz )
     int iByte;
     int i;
     unsigned char bByte = 0;
-    
+
     for ( i = 0; i < 2; i++, psz++ )
     {
 	*psz = (char) toupper( *psz );
-	
+
 	if ( *psz > '/' && *psz < ':' )
 	{
 	    iByte = ( ( (int) *psz ) - '0' );
@@ -954,7 +954,7 @@ int Hex2Byte( char *psz )
 	}
 	bByte += ( iByte * ( !i ? 16 : 1 ) );
     }
-    
+
     return( (int) bByte );
 }
 
@@ -963,7 +963,7 @@ int Hex2Byte( char *psz )
 
 void StandardButtons( FILE *f )
 {
-    SafePrint( f, "<A HREF=\"%s\" %s>[Menu]</A>\n", 
+    SafePrint( f, "<A HREF=\"%s\" %s>[Menu]</A>\n",
                iFrames ? NG_FMENU : NG_MENU,
                iFrames ? "TARGET=\"menu\"" : "" );
     SafePrint( f, "<A HREF=\"" NG_INFO "\">[About The Guide]</A>\n" );
