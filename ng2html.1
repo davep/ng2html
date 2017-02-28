@@ -2,7 +2,7 @@
 .SH NAME
 ng2html \- Norton Guide to HTML Document Converter.
 .SH SYNOPSIS
-\fBng2html\fP guide-path 
+\fBng2html\fP guide-path
 .SH DESCRIPTION
 \fBng2html\fP allows you to take a Norton Guide database file and convert
 it into a number of HTML documents. This will then allow you to view the
@@ -18,8 +18,8 @@ menu and about details, is "ng%lx.html" (you can change this in the
 source if you so desire) which means that on systems where you are
 restricted in the number of characters this restriction will affect the
 size of a guide you can process. On systems that use FAT (Dos or OS/2
-for example) you will run out of names if the guide is more than 0xFFFFFF 
-bytes (around 16 megs) in size. This should not be a problem for most 
+for example) you will run out of names if the guide is more than 0xFFFFFF
+bytes (around 16 megs) in size. This should not be a problem for most
 people. If it is, use VFAT or HPFS and a compiler that can handle long
 file names instead. :-)
 .SS OPTIONS
@@ -28,7 +28,7 @@ file names instead. :-)
 This is the path and name of the Norton Guide to be converted.
 .SS CONFIGURATION FILE
 You can customise the way ng2html works by using a configuration file.
-The name and location of the configuration file depends on what you 
+The name and location of the configuration file depends on what you
 set it to in the source. Look for the line that defines \fBCONFIG_FILE\fP.
 
 Valid options are:
@@ -52,23 +52,23 @@ If framed HTML code is being generated then this option can be used to
 specify the FRAMECOLS for the frames. By default this is set to 30%,70%.
 You can change this using this config option.
 .SH AUTHOR
-Dave Pearson \- davep@hagbard.demon.co.uk
+Dave Pearson \- davep@davep.org
 .SH COPYRIGHT
 NG2HTML NORTON GUIDE TO HTML DOCUMENT CONVERTER.
 Copyright (C) 1996,1997 David A Pearson
-   
-This program is free software; you can redistribute it and/or modify it 
-under the terms of the GNU General Public License as published by the Free 
-Software Foundation; either version 2 of the license, or (at your option) 
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2 of the license, or (at your option)
 any later version.
-     
-This program is distributed in the hope that it will be useful, but WITHOUT 
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 more details.
-     
-You should have received a copy of the GNU General Public License along with 
-this program; if not, write to the Free Software Foundation, Inc., 
+
+You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc.,
 675 Mass Ave, Cambridge, MA 02139, USA.
 .SH BUGS
 The conversion of box drawing characters and other "graphic" charcters that
