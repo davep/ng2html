@@ -1,0 +1,14 @@
+Thanks to the following people for their feedback:
+
+  Brian Dukes <brian@crox.demon.co.uk> did a lot of testing for me
+  with Dos and with his help I managed to track down a problem with
+  the ReadLong() function. If you are using a Dos compiler to produce
+  16bit code then make sure you uncomment the "#define
+  _16_BIT_COMPLIER_" line near the top of the source.
+
+  Steve Pribut <pribut@clark.net> reported that it compiles fine with
+  Microsoft C++ 4.1.
+
+  Rick Ratayczak <rickr@execpc.com> pointed out that ng2html was
+  producing some bad HTML in one or two places. Thanks to his
+  observation the output should be a lot cleaner now.

@@ -1,0 +1,23 @@
+Welcome to v1.05 of ng2html.
+
+ng2html was developed for and on Linux, however, it should compile
+clean in most environments. I know for sure that it works under Dos
+with DJGPP v2.0 or better and I'm told it compiles ok with Microsoft
+C++ 4.1.
+
+Note that if you are building ng2html under Dos with a 16bit compiler
+you probably want to uncomment the line that reads:
+
+	/* #define _16_BIT_COMPILER_ */
+
+You'll find it at around line 147.
+
+Please read the manual page for full details, I've included the source
+(ng2html.1) and a formatted version (ng2html.man).
+
+Any feedback is welcome, contact me at davep@hagbard.demon.co.uk.
+The latest version of ng2html is always available from my pages
+at:
+
+	US: http://www.acemake.com/hagbard
+	UK: http://www.hagbard.demon.co.uk
